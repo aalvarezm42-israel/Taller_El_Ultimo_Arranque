@@ -23,7 +23,12 @@ public class FrmClientes extends javax.swing.JFrame {
   
     private void cargarTabla() {
         String[] columnas = {"ID", "DPI/NIT", "Nombre", "Teléfono"};
-        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(null, columnas);
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(null, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Esto bloquea que se pueda escribir directamente en la cuadrícula
+            }
+        };
         
         Dao.ClienteDAO dao = new Dao.ClienteDAO();
         java.util.List<Modelo.Cliente> lista = dao.listarClientes();
@@ -58,6 +63,8 @@ public class FrmClientes extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbClientes = new javax.swing.JTable();
+        btnModificar = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -69,7 +76,7 @@ public class FrmClientes extends javax.swing.JFrame {
 
         jButton1.setText("GUARDAR CLIENTE");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 240, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, -1, -1));
 
         jLabel1.setText("DPI / NIT");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 120, 40));
@@ -91,9 +98,22 @@ public class FrmClientes extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbClientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbClientes);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 30, 360, 250));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, 360, 250));
+
+        btnModificar.setText("MODIFICAR");
+        btnModificar.addActionListener(this::btnModificarActionPerformed);
+        getContentPane().add(btnModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 270, 130, 30));
+
+        jButton2.setText("ELIMINAR");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 274, 130, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -136,6 +156,85 @@ if(dao.registrarCliente(nuevoCliente)) {
 System.out.println("Intentando guardar -> DPI: [" + identificador + "] Nombre: [" + nombre + "]");        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+// 1. Verificamos que el usuario haya seleccionado una fila en la tabla
+     // 1. Verificamos que el usuario haya seleccionado una fila
+        int filaSeleccionada = tbClientes.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla para modificar.");
+            return; 
+        }
+        
+        // 2. Extraemos el ID oculto de la tabla
+        int idCliente = Integer.parseInt(tbClientes.getValueAt(filaSeleccionada, 0).toString());
+        
+        // 3. Capturamos los textos
+        String identificador = txtIdentificador.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        
+        // 4. NUEVO ESCUDO: Verificamos que ninguna caja esté vacía
+        if (identificador.isEmpty() || nombre.isEmpty() || telefono.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Error: Ningún campo puede quedar vacío.");
+            return; // Detiene el proceso antes de ir a Oracle
+        }
+        
+        // 5. Empaquetamos y enviamos a Oracle
+        Modelo.Cliente clienteActualizado = new Modelo.Cliente(idCliente, identificador, nombre, telefono);
+        Dao.ClienteDAO dao = new Dao.ClienteDAO();
+        
+        if (dao.modificarCliente(clienteActualizado)) {
+            javax.swing.JOptionPane.showMessageDialog(null, "¡Cliente modificado exitosamente!");
+            cargarTabla();
+            txtIdentificador.setText("");
+            txtNombre.setText("");
+            txtTelefono.setText("");
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbClientesMouseClicked
+int fila = tbClientes.rowAtPoint(evt.getPoint());
+        
+        if (fila > -1) {
+            // Mandamos los datos de la fila seleccionada a las cajas de texto
+            txtIdentificador.setText(tbClientes.getValueAt(fila, 1).toString());
+            txtNombre.setText(tbClientes.getValueAt(fila, 2).toString());
+            txtTelefono.setText(tbClientes.getValueAt(fila, 3).toString());
+        } 
+    }//GEN-LAST:event_tbClientesMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+// 1. Verificamos que el usuario haya seleccionado una fila
+        int filaSeleccionada = tbClientes.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Por favor, seleccione un cliente de la tabla para eliminar.");
+            return; 
+        }
+        
+        // 2. Preguntamos si está completamente seguro
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(null, 
+                "¿Está seguro que desea eliminar este cliente de forma permanente?", 
+                "Confirmar Eliminación", 
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.WARNING_MESSAGE);
+                
+        // 3. Si responde que SÍ (YES_OPTION), procedemos a borrar
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            int idCliente = Integer.parseInt(tbClientes.getValueAt(filaSeleccionada, 0).toString());
+            
+            Dao.ClienteDAO dao = new Dao.ClienteDAO();
+            if (dao.eliminarCliente(idCliente)) {
+                javax.swing.JOptionPane.showMessageDialog(null, "¡Cliente eliminado exitosamente!");
+                
+                // Actualizamos la tabla y limpiamos las cajas de texto
+                cargarTabla();
+                txtIdentificador.setText("");
+                txtNombre.setText("");
+                txtTelefono.setText("");
+            }
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -162,7 +261,9 @@ System.out.println("Intentando guardar -> DPI: [" + identificador + "] Nombre: [
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -173,5 +274,7 @@ System.out.println("Intentando guardar -> DPI: [" + identificador + "] Nombre: [
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 // Método para llenar la tabla visual con los datos de Oracle
+    
+    
    
 }

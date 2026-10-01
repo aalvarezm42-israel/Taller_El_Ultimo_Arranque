@@ -85,5 +85,66 @@ public class ClienteDAO {
         }
         return lista;
     }
+    // Método para modificar un cliente existente en Oracle
+    public boolean modificarCliente(Modelo.Cliente cliente) {
+        String sql = "UPDATE CLIENTE SET identificador = ?, nombre = ?, telefono = ? WHERE id_cliente = ?";
+        
+        try {
+            con = conexionBase.conectar();
+            con.setAutoCommit(false); // Desactivamos autoguardado por seguridad
+            
+            ps = con.prepareStatement(sql);
+            ps.setString(1, cliente.getIdentificador());
+            ps.setString(2, cliente.getNombre());
+            ps.setString(3, cliente.getTelefono());
+            ps.setInt(4, cliente.getIdCliente()); // El ID que le dice a Oracle a quién actualizar
+            
+            ps.executeUpdate();
+            con.commit(); 
+            return true;
+            
+        } catch (java.sql.SQLException e) {
+            try {
+                if (con != null) con.rollback();
+            } catch (java.sql.SQLException ex) { }
+            
+            javax.swing.JOptionPane.showMessageDialog(null, "Error al modificar cliente: " + e.getMessage());
+            return false;
+        } finally {
+            conexionBase.desconectar();
+        }
+    }
+    // Método para eliminar un cliente en Oracle
+    public boolean eliminarCliente(int idCliente) {
+        String sql = "DELETE FROM CLIENTE WHERE id_cliente = ?";
+        
+        try {
+            con = conexionBase.conectar();
+            con.setAutoCommit(false); 
+            
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idCliente);
+            
+            ps.executeUpdate();
+            con.commit(); 
+            return true;
+            
+        } catch (java.sql.SQLException e) {
+            try {
+                if (con != null) con.rollback();
+            } catch (java.sql.SQLException ex) { }
+            
+            // Capturamos la regla de negocio: Error 2292 es violación de llave foránea en Oracle
+            if(e.getErrorCode() == 2292) { 
+                javax.swing.JOptionPane.showMessageDialog(null, "Error: No se puede eliminar este cliente porque tiene vehículos u otros registros asociados en el taller.");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Error al eliminar cliente: " + e.getMessage());
+            }
+            return false;
+        } finally {
+            conexionBase.desconectar();
+        }
+    }
+    
 
 }
