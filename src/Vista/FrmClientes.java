@@ -17,6 +17,7 @@ public class FrmClientes extends javax.swing.JFrame {
      */
     public FrmClientes() {
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         cargarTabla(); 
     }
     

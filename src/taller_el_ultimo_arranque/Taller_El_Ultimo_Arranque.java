@@ -14,7 +14,9 @@ public class Taller_El_Ultimo_Arranque {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+      Vista.FrmPrincipal menu = new Vista.FrmPrincipal();
+        menu.setLocationRelativeTo(null);
+        menu.setVisible(true);  
     }
     
 }

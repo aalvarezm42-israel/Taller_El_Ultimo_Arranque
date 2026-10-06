@@ -17,6 +17,7 @@ public class FrmMecanicos extends javax.swing.JFrame {
      */
     public FrmMecanicos() {
         initComponents();
+        this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         cargarTabla();
         
     }
