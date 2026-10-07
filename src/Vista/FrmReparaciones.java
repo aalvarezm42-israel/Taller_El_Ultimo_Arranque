@@ -17,6 +17,31 @@ public class FrmReparaciones extends javax.swing.JFrame {
      */
     public FrmReparaciones() {
         initComponents();
+        cargarTabla();
+    }
+    private void cargarTabla() {
+        String[] columnas = {"ID Rep.", "ID Vehículo", "ID Mecánico", "Fecha", "Descripción", "Costo Q"};
+        javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(null, columnas) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; 
+            }
+        };
+        
+        Dao.ReparacionDAO dao = new Dao.ReparacionDAO();
+        java.util.List<Modelo.Reparacion> lista = dao.listarReparaciones();
+        
+        for (Modelo.Reparacion r : lista) {
+            Object[] fila = new Object[6];
+            fila[0] = r.getIdReparacion();
+            fila[1] = r.getIdVehiculo();
+            fila[2] = r.getIdMecanico();
+            fila[3] = r.getFechaIngreso();
+            fila[4] = r.getDescripcion();
+            fila[5] = r.getCostoTotal();
+            modelo.addRow(fila);
+        }
+        tbReparaciones.setModel(modelo);
     }
 
     /**
@@ -37,6 +62,10 @@ public class FrmReparaciones extends javax.swing.JFrame {
         txtDescripcion = new javax.swing.JTextField();
         txtCosto = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbReparaciones = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -50,6 +79,30 @@ public class FrmReparaciones extends javax.swing.JFrame {
 
         jButton1.setText("GUARDAR REPARACION");
         jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        tbReparaciones.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbReparaciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbReparacionesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbReparaciones);
+
+        jButton2.setText("MODIFICAR");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
+        jButton3.setText("ELIMINAR");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,7 +130,17 @@ public class FrmReparaciones extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(txtIdMecanico, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                         .addComponent(txtIdVehiculo, javax.swing.GroupLayout.Alignment.LEADING)))
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(56, 56, 56))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,15 +164,19 @@ public class FrmReparaciones extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                         .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(57, 57, 57))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(25, 25, 25))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(57, 57, 57))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -123,6 +190,7 @@ String idVehiculoStr = txtIdVehiculo.getText().trim();
         
         // Validación de campos vacíos
         if (idVehiculoStr.isEmpty() || idMecanicoStr.isEmpty() || descripcion.isEmpty() || costoStr.isEmpty()) {
+            cargarTabla();
             javax.swing.JOptionPane.showMessageDialog(null, "Ningún campo puede quedar vacío.");
             return;
         }
@@ -149,6 +217,76 @@ String idVehiculoStr = txtIdVehiculo.getText().trim();
             javax.swing.JOptionPane.showMessageDialog(null, "Revise que los IDs sean números y el costo un número válido (ej. 150.50).");
         }        
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void tbReparacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbReparacionesMouseClicked
+int fila = tbReparaciones.rowAtPoint(evt.getPoint());
+        if (fila > -1) {
+            txtIdVehiculo.setText(tbReparaciones.getValueAt(fila, 1).toString());
+            txtIdMecanico.setText(tbReparaciones.getValueAt(fila, 2).toString());
+            // Saltamos la fecha (índice 3) porque no la editamos manual
+            txtDescripcion.setText(tbReparaciones.getValueAt(fila, 4).toString());
+            txtCosto.setText(tbReparaciones.getValueAt(fila, 5).toString());
+        }       
+    }//GEN-LAST:event_tbReparacionesMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+int filaSeleccionada = tbReparaciones.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccione una reparación de la tabla.");
+            return; 
+        }
+        
+        String idVehiculoStr = txtIdVehiculo.getText().trim();
+        String idMecanicoStr = txtIdMecanico.getText().trim();
+        String descripcion = txtDescripcion.getText().trim();
+        String costoStr = txtCosto.getText().trim();
+        
+        if (idVehiculoStr.isEmpty() || idMecanicoStr.isEmpty() || descripcion.isEmpty() || costoStr.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Llene todos los campos.");
+            return;
+        }
+        
+        try {
+            int idReparacion = Integer.parseInt(tbReparaciones.getValueAt(filaSeleccionada, 0).toString());
+            int idVehiculo = Integer.parseInt(idVehiculoStr);
+            int idMecanico = Integer.parseInt(idMecanicoStr);
+            double costo = Double.parseDouble(costoStr);
+            
+            Modelo.Reparacion rep = new Modelo.Reparacion(idReparacion, idVehiculo, idMecanico, null, descripcion, costo);
+            Dao.ReparacionDAO dao = new Dao.ReparacionDAO();
+            
+            if (dao.modificarReparacion(rep)) {
+                javax.swing.JOptionPane.showMessageDialog(null, "¡Reparación modificada con éxito!");
+                cargarTabla();
+                txtIdVehiculo.setText(""); txtIdMecanico.setText(""); txtDescripcion.setText(""); txtCosto.setText("");
+            }
+        } catch (NumberFormatException ex) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Revise que los IDs sean números enteros y el costo decimal.");
+        }        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+int filaSeleccionada = tbReparaciones.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            javax.swing.JOptionPane.showMessageDialog(null, "Seleccione una reparación de la tabla.");
+            return; 
+        }
+        
+        int confirmacion = javax.swing.JOptionPane.showConfirmDialog(null, 
+                "¿Eliminar este registro permanentemente?", "Confirmar", 
+                javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE);
+                
+        if (confirmacion == javax.swing.JOptionPane.YES_OPTION) {
+            int idReparacion = Integer.parseInt(tbReparaciones.getValueAt(filaSeleccionada, 0).toString());
+            Dao.ReparacionDAO dao = new Dao.ReparacionDAO();
+            
+            if (dao.eliminarReparacion(idReparacion)) {
+                javax.swing.JOptionPane.showMessageDialog(null, "¡Reparación eliminada!");
+                cargarTabla();
+                txtIdVehiculo.setText(""); txtIdMecanico.setText(""); txtDescripcion.setText(""); txtCosto.setText("");
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -177,10 +315,14 @@ String idVehiculoStr = txtIdVehiculo.getText().trim();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbReparaciones;
     private javax.swing.JTextField txtCosto;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtIdMecanico;
