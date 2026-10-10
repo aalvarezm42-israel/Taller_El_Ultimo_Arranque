@@ -207,7 +207,7 @@ int fila = tbMecanicos.rowAtPoint(evt.getPoint());
                 txtNombre.setText("");
                 txtEspecialidad.setText("");
             }
-        }      
+        } 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
