@@ -17,6 +17,7 @@ public class FrmVehiculos extends javax.swing.JFrame {
      */
     public FrmVehiculos() {
         initComponents();
+        this.setTitle("MÓDULO DE VEHÍCULOS");
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         cargarTabla();
     }
