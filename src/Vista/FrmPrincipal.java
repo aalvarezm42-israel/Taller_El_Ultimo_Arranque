@@ -17,6 +17,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
      */
     public FrmPrincipal() {
         initComponents();
+        this.setTitle("MENU PRINCIPAL");
     }
 
     /**

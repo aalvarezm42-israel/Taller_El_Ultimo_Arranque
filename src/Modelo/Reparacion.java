@@ -50,4 +50,7 @@ public class Reparacion {
 
     public double getCostoTotal() { return costoTotal; }
     public void setCostoTotal(double costoTotal) { this.costoTotal = costoTotal; }
+    private void prepararTabla() {
+  
+}
 }
