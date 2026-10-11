@@ -17,6 +17,7 @@ public class FrmReparaciones extends javax.swing.JFrame {
      */
     public FrmReparaciones() {
         initComponents();
+        this.setTitle("MÓDULO DE REPARACIONES");
         cargarTabla();
     }
     private void cargarTabla() {
