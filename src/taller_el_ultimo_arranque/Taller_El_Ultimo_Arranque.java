@@ -4,15 +4,10 @@
  */
 package taller_el_ultimo_arranque;
 
-/**
- *
- * @author abraham-alvarez
- */
+
 public class Taller_El_Ultimo_Arranque {
 
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) {
       Vista.FrmPrincipal menu = new Vista.FrmPrincipal();
         menu.setLocationRelativeTo(null);

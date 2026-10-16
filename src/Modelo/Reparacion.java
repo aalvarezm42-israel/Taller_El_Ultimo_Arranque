@@ -6,10 +6,7 @@ package Modelo;
 
 import java.sql.Date;
 
-/**
- *
- * @author abraham-alvarez
- */
+
 public class Reparacion {
     private int idReparacion;
     private int idVehiculo;
@@ -18,7 +15,7 @@ public class Reparacion {
     private String descripcion;
     private double costoTotal;
 
-    // Constructor completo
+    
     public Reparacion(int idReparacion, int idVehiculo, int idMecanico, Date fechaIngreso, String descripcion, double costoTotal) {
         this.idReparacion = idReparacion;
         this.idVehiculo = idVehiculo;
@@ -28,11 +25,11 @@ public class Reparacion {
         this.costoTotal = costoTotal;
     }
 
-    // Constructor vacío (opcional, siempre es buena práctica tenerlo)
+    
     public Reparacion() {
     }
 
-    // Getters y Setters
+   
     public int getIdReparacion() { return idReparacion; }
     public void setIdReparacion(int idReparacion) { this.idReparacion = idReparacion; }
 

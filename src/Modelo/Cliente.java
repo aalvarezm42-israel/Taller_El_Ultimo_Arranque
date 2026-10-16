@@ -4,23 +4,18 @@
  */
 package Modelo;
 
-/**
- *
- * @author abraham-alvarez
- */
 
-// Herencia usando 'extends'[cite: 3]
 public class Cliente extends Persona {
     private int idCliente;
     private String telefono;
 
     public Cliente(int idCliente, String identificador, String nombre, String telefono) {
-        super(identificador, nombre); // Llama al constructor de Persona
+        super(identificador, nombre); 
         this.idCliente = idCliente;
         this.telefono = telefono;
     }
 
-    // Polimorfismo: Sobrescritura del método[cite: 3]
+   
     @Override
     public String mostrarInformacion() {
         return "Cliente: " + getNombre() + " | DPI/NIT: " + getIdentificador() + " | Tel: " + telefono;

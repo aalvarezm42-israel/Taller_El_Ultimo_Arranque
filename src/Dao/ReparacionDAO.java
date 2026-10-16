@@ -13,12 +13,12 @@ public class ReparacionDAO {
     PreparedStatement ps;
 
     public boolean registrarReparacion(Modelo.Reparacion reparacion) {
-        // No incluimos fecha_ingreso porque Oracle pondrá el SYSDATE automáticamente
+        
         String sql = "INSERT INTO REPARACION (id_vehiculo, id_mecanico, descripcion, costo_total) VALUES (?, ?, ?, ?)";
         
         try {
             con = conexionBase.conectar();
-            con.setAutoCommit(false); // Transacción manual para proteger los datos
+            con.setAutoCommit(false); 
             
             ps = con.prepareStatement(sql);
             ps.setInt(1, reparacion.getIdVehiculo());
@@ -35,7 +35,7 @@ public class ReparacionDAO {
                 if (con != null) con.rollback();
             } catch (java.sql.SQLException ex) { }
             
-            // El error 2291 de Oracle salta si el ID del Vehículo o del Mecánico no existen
+            
             if (e.getErrorCode() == 2291) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error: El ID del Vehículo o del Mecánico no existe en la base de datos.");
             } else {
@@ -46,7 +46,7 @@ public class ReparacionDAO {
             conexionBase.desconectar();
         }
     }
-    // Método para listar reparaciones
+    
     public java.util.List<Modelo.Reparacion> listarReparaciones() {
         java.util.List<Modelo.Reparacion> lista = new java.util.ArrayList<>();
         String sql = "SELECT * FROM REPARACION ORDER BY id_reparacion ASC";
@@ -75,9 +75,9 @@ public class ReparacionDAO {
         return lista;
     }
 
-    // Método para modificar una reparación
+    
     public boolean modificarReparacion(Modelo.Reparacion reparacion) {
-        // La fecha no se actualiza para mantener el registro original de ingreso
+        
         String sql = "UPDATE REPARACION SET id_vehiculo = ?, id_mecanico = ?, descripcion = ?, costo_total = ? WHERE id_reparacion = ?";
         try {
             con = conexionBase.conectar();
@@ -106,7 +106,7 @@ public class ReparacionDAO {
         }
     }
 
-    // Método para eliminar una reparación
+    
     public boolean eliminarReparacion(int idReparacion) {
         String sql = "DELETE FROM REPARACION WHERE id_reparacion = ?";
         try {

@@ -4,17 +4,12 @@
  */
 package Vista;
 
-/**
- *
- * @author abraham-alvarez
- */
+
 public class FrmVehiculos extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmVehiculos.class.getName());
 
-    /**
-     * Creates new form FrmVehiculos
-     */
+    
     public FrmVehiculos() {
         initComponents();
         this.setTitle("MÓDULO DE VEHÍCULOS");
@@ -124,7 +119,7 @@ String placa = txtPlaca.getText().trim();
         String modelo = txtModelo.getText().trim();
         String idClienteStr = txtIdCliente.getText().trim();
         
-        // Validación de campos vacíos
+        
         if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || idClienteStr.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(null, "Ningún campo puede quedar vacío.");
             return;
@@ -140,7 +135,7 @@ String placa = txtPlaca.getText().trim();
                 javax.swing.JOptionPane.showMessageDialog(null, "¡Vehículo registrado y asignado al cliente exitosamente!");
                 cargarTabla();
                 
-                // Limpiamos las cajas
+               
                 txtPlaca.setText("");
                 txtMarca.setText("");
                 txtModelo.setText("");
@@ -224,28 +219,8 @@ int filaSeleccionada = tbVehiculos.getSelectedRow();
         }        
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(() -> new FrmVehiculos().setVisible(true));
     }
 

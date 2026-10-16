@@ -12,12 +12,12 @@ public class MecanicoDAO {
     PreparedStatement ps;
 
     public boolean registrarMecanico(Modelo.Mecanico mecanico) {
-        // Asegúrate de que el nombre de la tabla y las columnas coincidan con DBeaver
+        
         String sql = "INSERT INTO MECANICO (identificador, nombre, especialidad) VALUES (?, ?, ?)";
         
         try {
             con = conexionBase.conectar();
-            con.setAutoCommit(false); // Transacción manual
+            con.setAutoCommit(false); 
             
             ps = con.prepareStatement(sql);
             ps.setString(1, mecanico.getIdentificador());
@@ -25,7 +25,7 @@ public class MecanicoDAO {
             ps.setString(3, mecanico.getEspecialidad());
             
             ps.executeUpdate();
-            con.commit(); // Guardamos físicamente en Oracle
+            con.commit(); 
             return true;
             
         } catch (java.sql.SQLException e) {
@@ -40,7 +40,7 @@ public class MecanicoDAO {
         }
     }
     
-    // Método para consultar y listar todos los mecánicos
+    
     public java.util.List<Modelo.Mecanico> listarMecanicos() {
         java.util.List<Modelo.Mecanico> lista = new java.util.ArrayList<>();
         String sql = "SELECT * FROM MECANICO ORDER BY id_mecanico ASC";
@@ -66,7 +66,7 @@ public class MecanicoDAO {
         }
         return lista;
     }
-    // Método para modificar
+    
     public boolean modificarMecanico(Modelo.Mecanico mecanico) {
         String sql = "UPDATE MECANICO SET identificador = ?, nombre = ?, especialidad = ? WHERE id_mecanico = ?";
         try {
@@ -91,7 +91,7 @@ public class MecanicoDAO {
         }
     }
 
-    // Método para eliminar
+    
     public boolean eliminarMecanico(int idMecanico) {
         String sql = "DELETE FROM MECANICO WHERE id_mecanico = ?";
         try {

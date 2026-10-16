@@ -16,13 +16,13 @@ public class VehiculoDAO {
         
         try {
             con = conexionBase.conectar();
-            con.setAutoCommit(false); // Transacción manual
+            con.setAutoCommit(false); 
             
             ps = con.prepareStatement(sql);
             ps.setString(1, vehiculo.getPlaca());
             ps.setString(2, vehiculo.getMarca());
             ps.setString(3, vehiculo.getModelo());
-            ps.setInt(4, vehiculo.getIdCliente()); // Aquí va la llave foránea
+            ps.setInt(4, vehiculo.getIdCliente()); 
             
             ps.executeUpdate();
             con.commit(); 
@@ -33,7 +33,7 @@ public class VehiculoDAO {
                 if (con != null) con.rollback();
             } catch (java.sql.SQLException ex) { }
             
-            // Si el cliente no existe, Oracle lanzará un error de llave foránea
+            
             if (e.getErrorCode() == 2291) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error: El ID del Cliente no existe en la base de datos.");
             } else {
@@ -44,7 +44,7 @@ public class VehiculoDAO {
             conexionBase.desconectar();
         }
     }
-    // Método para listar vehículos
+    
     public java.util.List<Modelo.Vehiculo> listarVehiculos() {
         java.util.List<Modelo.Vehiculo> lista = new java.util.ArrayList<>();
         String sql = "SELECT * FROM VEHICULO ORDER BY id_vehiculo ASC";
@@ -72,7 +72,7 @@ public class VehiculoDAO {
         return lista;
     }
 
-    // Método para modificar
+    
     public boolean modificarVehiculo(Modelo.Vehiculo vehiculo) {
         String sql = "UPDATE VEHICULO SET placa = ?, marca = ?, modelo = ?, id_cliente = ? WHERE id_vehiculo = ?";
         try {
@@ -102,7 +102,7 @@ public class VehiculoDAO {
         }
     }
 
-    // Método para eliminar
+    
     public boolean eliminarVehiculo(int idVehiculo) {
         String sql = "DELETE FROM VEHICULO WHERE id_vehiculo = ?";
         try {

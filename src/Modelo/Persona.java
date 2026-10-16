@@ -3,14 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Modelo;
-
-/**
- *
- * @author abraham-alvarez
- */
+ 
 
 public abstract class Persona {
-    // Encapsulamiento: Atributos privados
+    
     private String identificador;
     private String nombre;
 
@@ -19,10 +15,10 @@ public abstract class Persona {
         this.nombre = nombre;
     }
 
-    // Método que será sobrescrito (Polimorfismo)[cite: 3]
+    
     public abstract String mostrarInformacion();
 
-    // Getters y Setters
+    
     public String getIdentificador() {
         return identificador;
     }

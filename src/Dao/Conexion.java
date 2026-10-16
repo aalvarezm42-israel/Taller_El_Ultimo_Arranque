@@ -4,10 +4,7 @@
  */
 package Dao;
 
-/**
- *
- * @author abraham-alvarez
- */
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;

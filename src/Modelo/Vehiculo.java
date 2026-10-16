@@ -4,18 +4,15 @@
  */
 package Modelo;
 
-/**
- *
- * @author abraham-alvarez
- */
+
 public class Vehiculo {
     private int idVehiculo;
     private String placa;
     private String marca;
     private String modelo;
-    private int idCliente; // Esta es la llave foránea que conecta con el Cliente
+    private int idCliente; 
 
-    // Constructor completo
+    
     public Vehiculo(int idVehiculo, String placa, String marca, String modelo, int idCliente) {
         this.idVehiculo = idVehiculo;
         this.placa = placa;
@@ -24,7 +21,7 @@ public class Vehiculo {
         this.idCliente = idCliente;
     }
 
-    // Getters y Setters
+    
     public int getIdVehiculo() { return idVehiculo; }
     public void setIdVehiculo(int idVehiculo) { this.idVehiculo = idVehiculo; }
 
